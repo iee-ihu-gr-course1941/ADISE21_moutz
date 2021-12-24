@@ -1,0 +1,254 @@
+html{
+    background-color: #ade8f4;
+}
+
+/* MAIN MENU */
+.main_menu{
+    position: absolute;
+    width: 550px;
+    height: 88vh;
+    top: 45px;
+    left: 24.5em;
+    background-color: #0096c7;
+    backdrop-filter: blur(10px);
+    border: 2px solid #0096c7;
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    transition: .3s;
+    border-radius: 10px;
+}
+
+
+.mm_active{
+    left: 31em;
+}
+
+#main_header{
+    position: absolute;
+    text-transform: uppercase;
+    top: 50px;
+    left: 4.4em;
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+}
+
+
+#astr{
+    position: absolute;
+    font-size: 40px;
+    color: white;
+    top: 60px;
+    left: 6.75em;
+}
+
+#astr::before{
+    content: "";
+    display: block;
+    width: 110px;
+    height: 2px;
+    position: absolute;
+    background-color: white;
+    left: -115px;
+    top: 27%;
+}
+
+#astr::after{
+    content: "";
+    display: block;
+    width: 110px;
+    height: 2px;
+    position: absolute;
+    background-color: white;
+    left: 20px;
+    top: 27%;
+}
+
+.main_btns{
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    top: 12em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main_btns button{
+    color: white;
+    width: 400px;
+    padding: 30px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    border:none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#play_btn{
+    background-color: #f5163b ;
+}
+
+#play_btn:hover{
+    background-color: #d41737 ;
+}
+#logout_btn{
+    background-color: #7706f8 ;
+}
+
+#logout_btn:hover{
+    background-color: #160575 ;
+}
+
+#bot_btn{
+    background-color: #6d6b6c;
+}
+
+#bot_btn:hover{
+    background-color: #535353;
+}
+
+#pl_fr_btn{
+    background-color: #3da859;
+}
+
+#pl_fr_btn:hover{
+    background-color: #318d49;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FREINDS LIST */
+
+.container-friends{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 18rem;
+    background-color: #0096c7;
+    transition: .3s;
+}
+
+.friends-list{
+    position: relative;
+    width: 100%;
+    height: 88vh;
+    overflow-y: auto;
+    background-color: #0096c7;
+    overflow-x: hidden;
+}
+
+.active{
+    right:-195px;
+}
+
+.user{
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 3.75em;
+    background-color : #06779d;
+}
+
+.user-sidebar{
+    padding-left: 1.6rem;
+}
+
+.user-sidebar > .avatar-user{
+    padding-left: 26px;
+}
+
+.username-main-active{
+    padding-left: 50px;
+}
+
+.user-icon{
+    position: relative;
+    padding-top: 15px;
+    padding-left: 15px;
+    margin-left: -3px !important;
+    color: wheat;
+    display: inline;
+    float: left;
+}
+
+
+.username-main{
+    margin-left: 0.9rem;
+    margin-bottom: 1.5rem;
+    width: 20.4375rem;
+    letter-spacing: 0.08rem;
+    font-size: 15px
+}
+
+.username-main{
+    position: relative;
+    display: inline;
+    bottom: 22px;
+    padding-left: 35px;
+    color: white;
+    float: left;
+}
+
+.add-friend{
+    color: white;
+    position: relative;
+    top: 23px;
+    right: -190px;
+}
+
+.sidebar-right-btn-active{
+    right: 76px !important;
+}
+
+.sidebar-right-btn{
+    color: white;
+    position: relative;
+    top: 23px;
+    right: -200px;
+    cursor: pointer;
+}
+
+
+.sidebar-right-btn:hover{
+    color:#d1c294;
+    transition: color .1s ease-in;
+}
+
+.add-friend:hover{
+    cursor: pointer;
+    color:#d1c294;
+    transition: color .1s ease-in;
+}
+/*
+.avatar{
+    padding-left: 5px;
+} */
+
+.avatar-user{
+    position: absolute;
+    padding-top: 35px;
+    left: 32px;
+    font-size: 13px;
+}
+
+.avatar{
+    position: absolute;
+    padding-top: 12px;
+    left: 5px;
+    font-size: 13px;
+}
