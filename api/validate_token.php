@@ -18,6 +18,7 @@ $jwt=isset($data->jwt) ? $data->jwt : "";
 if($jwt){
  
     try {
+        
         $decoded = JWT::decode($jwt, $key, array('HS256'));
  
         http_response_code(200);
@@ -26,7 +27,7 @@ if($jwt){
             "message" => "Access granted.",
             "data" => $decoded->data
         ));
- 
+      
     }
  
      catch (Exception $e){
