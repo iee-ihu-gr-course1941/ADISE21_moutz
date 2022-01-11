@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Μουτζούρης</title>
+    <link rel="stylesheet" href="game.css" />
+  </head>
+
+  <body>
+
+    <div id="gameWrapper">
+      <!-- Player 1 -->
+      <div id="Player1" class="deckWrapper">
+        <h1 class="PName">OPPONENT</h1>
+
+        <div class="deck" data-deck>
+          <div id="othersDeck"></div>
+        </div>
+      </div>
+
+      <div class="console">
+        <h1 class="PName" id="consoleText">CONSOLE</h1>
+      </div>
+
+      <!-- Player 2 -->
+      <div id="Player2" class="deckWrapper">
+        <h1 class="PName">ME</h1>
+
+        <div class="deck">
+          <div id="myDeck"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gameButtons">
+      <div class="dropDiv">
+        <a href="#" class="button evenSpacingButt" id="dropDoubles"
+          >Drop cards</a
+        >
+      </div>
+
+      <div class="subDiv">
+        <a href="#" class="button evenSpacingButt" id="submitPick">End Turn</a>
+      </div>
+    </div>
+
+    <div class="leaveDiv">
+      <a href="#" class="button evenSpacingButt" id="button">Leave Game</a>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>

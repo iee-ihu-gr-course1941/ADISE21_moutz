@@ -62,5 +62,45 @@ class Friend{
 //    }
        return false;
    }
-}
+   function showfriend(){
+        $query = "SELECT DISTINCT  u.username
+                FROM " . $this->table_helper . " as u
+                INNER JOIN " . $this->table_name  . " ON f.id_senter=u.id
+                INNER JOIN " . $this->table_name  . " ON f.id_receiver=u.id
+                WHERE (u.id = f.id_senter OR  u.id = f.id_receiver) AND NOT( ? )";
+              
+    
+                $stmt = $this->conn->prepare( $query );
+     
+        
+                $this->username=htmlspecialchars(strip_tags($this->username));
+             
+                
+                $stmt->bindParam(1, $this->id);
+             
+                
+                $stmt->execute();
+             
+                
+                $num = $stmt->rowCount();
+           
+                
+                if($num>0){
+            
+                    
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+             
+                    
+                    $this->id = $row['id'];
+                    $this->username = $row['username'];
+                    $this->password = $row['password'];
+             
+                   
+                    return true;
+                }
+             
+              
+                return false;
+            }
+   }
 ?>

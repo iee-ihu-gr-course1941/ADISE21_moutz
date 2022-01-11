@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+html {
+  background-color: #ade8f4;
+  font-family: "Roboto", sans-serif;
+}
+
+:root {
+  --border-radius: 10px;
+  --shadow: 9px -5px 13px 1px rgb(5 0 0 / 38%);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 50px;
+  margin: 0;
+  justify-content: space-between;
+}
+
+
+/* Game */
+#gameWrapper{
+  width: 100%;
+  
+}
+
+.PName {
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.deckWrapper {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  background-color: #059dcfc7;
+  box-shadow: var(--shadow);
+  padding-bottom: 30px;
+}
+
+
+/* Console */
+.console {
+  position: relative;
+  margin: 50px auto;
+  padding-bottom: 40px;
+  width: 40%;
+  padding: 10px;
+  background-color: #0095c718;
+  text-align: center;
+  box-shadow: inset 0px 0px 14px 2px #00000055;;
+}
+
+  /* Console have blinking line */
+  .console h1:after {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background: black;
+    opacity: 0;
+    display: inline-block;
+    animation: blink 1s linear infinite alternate;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  #consoleText{
+    text-transform: capitalize;
+  }
+
+
+
+/* Cards */
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface");
+
+.description {
+  text-align: center;
+  font-weight: normal;
+}
+
+.deck {
+  width: 60%;
+  margin: 10px auto;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: "Abril Fatface", cursive;
+}
+
+.card {
+  width: 100px;
+  box-sizing: border-box;
+  height: 140px;
+  padding: 10px;
+  background-color: white;
+  display: inline-block;
+  border-radius: 10px;
+  font-size: 30pt;
+  text-align: left;
+  color: black;
+  margin-left: -50px;
+  position: relative;
+  transition: all 0.5s;
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 5px 3px #555;
+}
+
+.card:hover {
+  top: -5px;
+  box-shadow: 2px 2px 8px 3px #333;
+  z-index: 20;
+}
+
+.stayHov{
+  top: -5px;
+  box-shadow: 2px 2px 8px 3px #333;
+  z-index: 20;
+}
+
+.card.hearts,
+.card.diamonds {
+  color: red;
+}
+
+
+
+
+
+
+/* Buttons */
+.button {
+  padding: 16px 42px;
+  box-shadow: var(--shadow);
+  line-height: 1.25;
+  background: #0096c7;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.6s ease;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  border: 0px;
+}
+
+.button:hover {
+  background: #444;
+}
+
+.leaveDiv {
+  align-self: center;
+}
+
+.gameButtons{
+  display: flex;
+  gap: 15rem;
+}
