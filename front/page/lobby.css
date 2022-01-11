@@ -1,11 +1,13 @@
 html{
     background-color: #ade8f4;
+    
 }
 
 
 
 /* MAIN MENU */
 .main_menu{
+    display: flex;
     position: absolute;
     width: 550px;
     height: 88vh;
@@ -42,6 +44,8 @@ html{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* overflow: auto; */
+    gap: 10px;
 }
 
 .main_btns button{
@@ -85,7 +89,71 @@ html{
 #pl_fr_btn:hover{
     background-color: #318d49;}
 
+.roomContainer{
+    background-color: #055f7e;
+    min-height: 40px;
+    width: calc(100% - 150px);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+    
+}
 
+.roomContainer div{
+    border-radius: 20px;
+    /* background-color: #02394b; */
+    flex-grow: 1;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+
+}
+
+a{
+    all: unset;
+
+}
+.roomContainer:hover{
+    background-color:#02283593;
+    transition: .2s ease-in;
+}
+
+
+.btnConnect{
+    
+    
+    gap: 5px;
+}
+
+.participants{
+    
+    
+    flex-direction: row;
+
+}
+
+.aBtn{
+    height: 10px;
+    width: 10px;
+    border-radius: 9999px;
+  
+}
+
+.aBtnA{
+    background-color: #3da859;
+    
+}
+
+.aBtnF{
+    background-color: black;
+    
+}
+
+.unclick{
+    pointer-events: none;
+}
 
 
 
@@ -308,3 +376,4 @@ background: #DDD;
 .friendOffline:not(.selected):hover {
     opacity:0.9;
 }
+
