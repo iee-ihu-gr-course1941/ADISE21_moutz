@@ -5,58 +5,58 @@ $request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
 print_r($request_uri);
 switch ($request_uri[0]) {
         // login main page
-    case '/ADISE21_moutz/routre.php/login':
+    case '/~it185222/ADISE21_moutz/routre.php/login':
         require 'api/User/login.php';
         break;
         // register page   
-    case '/ADISE21_moutz/routre.php/register':
+    case '/~it185222/ADISE21_moutz/routre.php/register':
         require 'api/User/signup.php';
         break;
         // validate
-    case '/ADISE21_moutz/routre.php/validate':
+    case '/~it185222/ADISE21_moutz/routre.php/validate':
         require 'api/validate_token.php';
         break;
         // lobbies    
-    case '/ADISE21_moutz/routre.php/getrooms':
+    case '/~it185222/ADISE21_moutz/routre.php/getrooms':
         require 'api/game/getallrooms.php';
         break;
         //createroom
-    case '/ADISE21_moutz/routre.php/createroom':
+    case '/~it185222/ADISE21_moutz/routre.php/createroom':
         require 'api/game/createroom.php';
         break;
         //join room
-    case '/ADISE21_moutz/routre.php/joinroom':
+    case '/~it185222/ADISE21_moutz/routre.php/joinroom':
         require 'api/game/joinroom.php';
         break;
         //startgme
-    case '/ADISE21_moutz/routre.php/startgame':
+    case '/~it185222/ADISE21_moutz/routre.php/startgame':
         require 'api/game/startgame.php';
         break;    
         //dropcards
-    case '/ADISE21_moutz/routre.php/dropcards':
+    case '/~it185222/ADISE21_moutz/routre.php/dropcards':
         require 'api/game/dropcards.php';
         break;
         //selectrandom
-    case '/ADISE21_moutz/routre.php/selectrandom':
+    case '/~it185222/ADISE21_moutz/routre.php/selectrandom':
         require 'api/game/selectrandom.php';
         break;
          //selectrandom
-    case '/ADISE21_moutz/routre.php/showdeck':
+    case '/~it185222/ADISE21_moutz/routre.php/showdeck':
         require 'api/game/showdeck.php';
         break;
-     case '/ADISE21_moutz/routre.php/getwinner':
+     case '/~it185222/ADISE21_moutz/routre.php/getwinner':
         require 'api/game/getwinner.php';
         break;    
-    case '/ADISE21_moutz/routre.php/playerturn':
+    case '/~it185222/ADISE21_moutz/routre.php/playerturn':
         require 'api/game/turn.php';
         break;        
-    case '/ADISE21_moutz/routre.php/changeturn':
+    case '/~it185222/ADISE21_moutz/routre.php/changeturn':
         require 'api/game/changeturn.php';
         break; 
-    case '/ADISE21_moutz/routre.php/leavegame':
+    case '/~it185222/ADISE21_moutz/routre.php/leavegame':
         require 'api/game/leavegame.php';
         break;        
-    case '/ADISE21_moutz/routre.php/getusername':
+    case '/~it185222/ADISE21_moutz/routre.php/getusername':
         require 'api/user/getUsername.php';
         break;
             

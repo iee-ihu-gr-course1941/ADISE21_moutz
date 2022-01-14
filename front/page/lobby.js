@@ -70,7 +70,7 @@ $(document).on("click", "#play_btn", function () {
   //AJAX request that shows all rooms
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/getrooms",
+    url: "/~it185222/ADISE21_moutz/routre.php/getrooms",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt }),
     contentType: "application/json",
@@ -129,7 +129,7 @@ $(document).on("click", "#play_btn", function () {
 function clickFunct(num, isSecond) {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/joinroom",
+    url: "/~it185222/ADISE21_moutz/routre.php/joinroom",
     dataType: "json",
     contentType: "application/json",
     data: JSON.stringify({ room: num, jwt: jwt }),
@@ -137,7 +137,7 @@ function clickFunct(num, isSecond) {
       //Request to start game and render my cards for the first time
       $.ajax({
         method: "POST",
-        url: "/ADISE21_moutz/routre.php/startgame",
+        url: "/~it185222/ADISE21_moutz/routre.php/startgame",
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify({ jwt: jwt, room: num }),
@@ -146,7 +146,7 @@ function clickFunct(num, isSecond) {
         },
       });
 
-      window.location = `/ADISE21_moutz/front/page/game/game.html?lobbyId=${num}`;
+      window.location = `/~it185222/ADISE21_moutz/front/page/game/game.html?lobbyId=${num}`;
     },
     error: function () {
       alert("Something went wrong :(");
@@ -159,7 +159,7 @@ getUsername();
 function getUsername() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/getusername",
+    url: "/~it185222/ADISE21_moutz/routre.php/getusername",
     dataType: "json",
     contentType: "application/json",
     data: JSON.stringify({ jwt: jwt }),

@@ -37,7 +37,7 @@ $("#turnText").hide();
 
 $.ajax({
   method: "POST",
-  url: "/ADISE21_moutz/routre.php/getusername",
+  url: "/~it185222/ADISE21_moutz/routre.php/getusername",
   dataType: "json",
   contentType: "application/json",
   data: JSON.stringify({ jwt: jwt }),
@@ -54,7 +54,7 @@ $.ajax({
 function dropCard() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/dropcards",
+    url: "/~it185222/ADISE21_moutz/routre.php/dropcards",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
@@ -79,7 +79,7 @@ function dropCard() {
 function getTurn() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/playerturn",
+    url: "/~it185222/ADISE21_moutz/routre.php/playerturn",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
@@ -98,7 +98,7 @@ function getTurn() {
 function changeTurn() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/changeturn",
+    url: "/~it185222/ADISE21_moutz/routre.php/changeturn",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
@@ -117,7 +117,7 @@ function changeTurn() {
 function renderCards() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/showdeck",
+    url: "/~it185222/ADISE21_moutz/routre.php/showdeck",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt }),
     contentType: "application/json",
@@ -161,7 +161,7 @@ function renderCards() {
 function selectCard() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/selectrandom",
+    url: "/~it185222/ADISE21_moutz/routre.php/selectrandom",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
@@ -182,7 +182,7 @@ function selectCard() {
 function leaveGame() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/leavegame",
+    url: "/~it185222/ADISE21_moutz/routre.php/leavegame",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
@@ -195,7 +195,7 @@ function leaveGame() {
 function getWinner() {
   $.ajax({
     method: "POST",
-    url: "/ADISE21_moutz/routre.php/getwinner",
+    url: "/~it185222/ADISE21_moutz/routre.php/getwinner",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
