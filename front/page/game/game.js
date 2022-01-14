@@ -3,7 +3,7 @@ var deck = new Array(); //Metablhth pou 8a xrhsimopoih8ei mesa sta function
 var player1Array = new Array(); //To array me tis kartes pou exw sto xeri mou
 // var player2Array = new Array();
 var jwt = getCookie("jwt"); //To cookie tou user
-// var myCount = 0;
+var myCount = 0;
 var getBtn = document.querySelector(".getDiv");
 var enemCount = 0; //To plh8os twn kartwn pou exei o antipalos sto xeri tou
 let myURL = new URLSearchParams(window.location.search); //To URL pou eimai
@@ -18,7 +18,11 @@ var isClickedAndPlayed = false;
 var runAtLeastOnce = false;
 var isWinner = false;
 var gotCard = false;
-console.log(consoleText);
+var runFirstTime = true;
+var dropped = false;
+var myNameContainer = document.querySelector("#pname2");
+var turnName = document.querySelector("#turnText");
+$("#turnText").hide();
 
 //
 //
@@ -30,50 +34,80 @@ console.log(consoleText);
 //
 //    -- DROP CARDS REQUEST --
 //Request sthn bash na ri3ei tis diples kartes
+
+$.ajax({
+  method: "POST",
+  url: "/ADISE21moutz/routre.php/getusername",
+  dataType: "json",
+  contentType: "application/json",
+  data: JSON.stringify({ jwt: jwt }),
+  success: function (success) {
+    console.log("yee");
+    console.log(success.data)
+    myNameContainer.innerHTML = success.data;
+  },
+  error: function(){
+    console.log("error on getting username")
+  }
+});
+
 function dropCard() {
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/dropcards",
+    url: "/ADISE21moutz/routre.php/dropcards",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
-    success: function (result) {
+    success: function () {
+      // dropped = true;
       resetConsole("Doubles dropped");
       renderCards(); //Ksana kane render tis kartes
     },
-    error: function (xhr, resp, text) {
+    error: function (resp, text) {
+      // dropped = false;
       console.log(resp, text);
       resetConsole("Its not your turn");
-    },
-  });
-}
-
-function getTurn() {
-  $.ajax({
-    method: "POST",
-    url: "/aa/adise2021/routre.php/playerturn",
-    dataType: "json",
-    data: JSON.stringify({ jwt: jwt, room: roomId }),
-    contentType: "application/json",
-    success: function (result) {
-      if (enemCount <= 0) {
-        resetConsole(`Waiting for players`);
-      } else {
-        resetConsole(`${result.userturn.username}'s turn`);
+      if(selected<-1){
+      enemy[selected].classList.toggle("stayHov");
+      selected = -1;
       }
     },
   });
 }
 
+//      -- Return the name of the person that plays in this turn --
+function getTurn() {
+  $.ajax({
+    method: "POST",
+    url: "/ADISE21moutz/routre.php/playerturn",
+    dataType: "json",
+    data: JSON.stringify({ jwt: jwt, room: roomId }),
+    contentType: "application/json",
+    success: function (result) {
+      if (enemCount > 0) {
+        if (!isWinner) {
+          $("#turnText").show();
+        }
+        turnName.innerText = `${result.userturn.username}'s turn`;
+      }
+    },
+  });
+}
+
+//      -- Change The Turn Request --
 function changeTurn() {
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/changeturn",
+    url: "/ADISE21moutz/routre.php/changeturn",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
     success: function () {
-      console.log("Changed Turn");
+      resetConsole("Changed Turn");
+      gotCard = false;
+    },
+    error: function () {
+      resetConsole("Its not your turn");
     },
   });
 }
@@ -83,33 +117,41 @@ function changeTurn() {
 function renderCards() {
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/showdeck",
+    url: "/ADISE21moutz/routre.php/showdeck",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt }),
     contentType: "application/json",
     success: function (result) {
       //8a kaleitai sunexeia
-      getTurn();
-
       results = result.cards; //Periexei se ena array tis kartes
       enemCount = 0;
       player1Array = [];
 
       for (all in results) {
-        if (result.myid == results[all].user_id) {
+        if (result.id == results[all].user_id) {
           player1Array.push({ v: `${results[all].v}`, c: `${results[all].c}` }); //Add card to my hand(array)
+          myCount = player1Array.length;
         } else {
           enemCount++; //Pros8ese sto plh8os twn kartwn tou antipalou akoma mia
         }
       }
-
       renderMyDeck(player1Array);
 
+      //Check enemys deck should be rendered
       if (enemCount != previousEnemCount) {
         renderOthersDeck(enemCount);
-
       }
       previousEnemCount = enemCount;
+
+      if (!runFirstTime) {
+        if (enemCount != 0 || myCount != 0) {
+          resetConsole("Game started!");
+        }
+      }
+      runFirstTime = false;
+    },
+    error: function (xhr, resp, text) {
+      console.log(xhr, resp, text);
     },
   });
 }
@@ -119,86 +161,73 @@ function renderCards() {
 function selectCard() {
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/selectrandom",
+    url: "/ADISE21moutz/routre.php/selectrandom",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
-    success: function (result) {
+    success: function () {
       gotCard = true;
-      console.log("success at selectCard")
+      resetConsole("Got card"); //
+      selected = -1;
     },
     error: function () {
-      
-      console.log("Bad at selectCard")
+      resetConsole("Can't select card on others turn"); //It's the others turn
+      enemy[selected].classList.toggle("stayHov");
+      selected = -1;
     },
   });
 }
 
-function leaveGame(){
+//        -- Leave Room --
+function leaveGame() {
   $.ajax({
-  method: "POST",
-    url: "/aa/adise2021/routre.php/leavegame",
+    method: "POST",
+    url: "/ADISE21moutz/routre.php/leavegame",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
-    success: function (result) {
-      console.log("success at selectCard")
-    }
+    success: function () {
+      console.log("Left the room");
+    },
   });
 }
 
 function getWinner() {
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/getwinner",
+    url: "/ADISE21moutz/routre.php/getwinner",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt, room: roomId }),
     contentType: "application/json",
     success: function (result) {
-      console.log(result.winner);
       resetConsole(`${result.winner} won!!!`);
       $(".gameButtons").hide();
-      $(".card").hide();
+      $("#turnText").hide();
       isWinner = true;
-      console.log("Inside winner success");
     },
-    error: function (xhr, resp, text) {
+    error: function (resp, text) {
       console.log(resp, text);
     },
   });
 }
 
 //
+//      -- Render Engine --
 //
-//
-//
-//                  -- Render Engine --
-//
-//
-//
-//
-
-renderCards();
-var timer = setInterval(() => {
+if (!isWinner) {
   renderCards();
-  setTimeout(() => {
+  getTurn();
+  var timer = setInterval(() => {
     getTurn();
+    renderCards();
+    getWinner();
   }, 1000);
-  getWinner();
-}, 1500);
-
-if (isWinner) {
+} else {
   clearInterval(timer);
 }
 
 //
-//
-//
-//
 //                  -- Functions --
-//
-//
-//
 //
 
 //Emfanise sto page tis kartes mou
@@ -228,10 +257,8 @@ function renderMyDeck(deck) {
 $(document).on("click", "#dropDoubles", function () {
   try {
     dropCard();
-    console.log("Im inside try");
   } catch {
     consoleT.innerText = "OTHERS TURN";
-    console.log("Something went wrong");
   }
 });
 
@@ -266,24 +293,27 @@ function renderOthersDeck(cardCount) {
 }
 
 getBtn.addEventListener("click", function () {
-  if(!gotCard){
-    selectCard();
-  }else{
-    resetConsole("Already got a card")
+  if (isClicked == true) {
+    isClicked = false;
+    consoleT.innerHTML = "CONSOLE";
+    if (!gotCard) {
+      selectCard();
+    } else {
+      resetConsole("Already got a card");
+      enemy[selected].classList.toggle("stayHov");
+      selected = -1;
+    }
+  } else {
+    resetConsole("You must select a card first");
   }
 });
 
 //                    --END TURN--
 //Elenxos an exei path8ei mia karta wste na mporoume na kanoume End Turn
 endT.addEventListener("click", function () {
-  if (isClicked == true) {
-    isClicked = false;
-    consoleT.innerHTML = "CONSOLE";
-    changeTurn();
-    gotCard = false;
-  } else {
-    resetConsole("You must select a card first");
-  }
+  changeTurn();
+  enemy[selected].classList.toggle("stayHov");
+  selected = -1;
 });
 
 function resetConsole(string) {
@@ -291,10 +321,9 @@ function resetConsole(string) {
   consoleT.innerText = string.toUpperCase();
 }
 
-document.querySelector("#leaveGameBtn").addEventListener("click", function (){
+document.querySelector("#leaveGameBtn").addEventListener("click", function () {
   leaveGame();
-})
-
+});
 
 //
 //

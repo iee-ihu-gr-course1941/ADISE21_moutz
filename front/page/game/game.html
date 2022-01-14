@@ -16,6 +16,11 @@
 
   <body>
 
+    <div class="leaveDiv">
+      <a href="../lobby.html" class="button evenSpacingButt" id="leaveGameBtn">Leave Game</a>
+      <!-- href="../lobby.html" -->
+    </div>
+
     <div id="gameWrapper">
       <!-- Player 1 -->
       <div id="Player1" class="deckWrapper">
@@ -27,7 +32,9 @@
       </div>
 
       <div class="console">
-        <h1 class="PName" id="consoleText">CONSOLE</h1>
+        <h2 id="turnText" class="PName"></h2>
+        <br>
+        <h1 class="PName" id="consoleText">WAITING FOR PLAYERS</h1>
       </div>
 
       <!-- Player 2 -->
@@ -58,9 +65,6 @@
       </div>
     </div>
 
-    <div class="leaveDiv">
-      <a href="../lobby.html" class="button evenSpacingButt" id="leaveGameBtn">Leave Game</a>
-    </div>
 
     <!-- href="../lobby.html" -->
     <script src="game.js"></script>
