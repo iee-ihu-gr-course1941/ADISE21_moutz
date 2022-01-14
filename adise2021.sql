@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2022 at 01:05 AM
+-- Generation Time: Jan 14, 2022 at 09:52 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -32,6 +32,13 @@ CREATE TABLE `activerooms` (
   `playerturn` int(11) NOT NULL,
   `gamestatus` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `activerooms`
+--
+
+INSERT INTO `activerooms` (`roomid`, `playerturn`, `gamestatus`) VALUES
+(3, 84, 1);
 
 -- --------------------------------------------------------
 
@@ -129,6 +136,53 @@ CREATE TABLE `playercards` (
   `card_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `playercards`
+--
+
+INSERT INTO `playercards` (`user_id`, `card_id`) VALUES
+(84, 16),
+(84, 33),
+(84, 12),
+(84, 39),
+(84, 24),
+(84, 19),
+(84, 5),
+(84, 17),
+(84, 31),
+(84, 27),
+(84, 34),
+(84, 2),
+(84, 7),
+(84, 11),
+(84, 3),
+(84, 37),
+(84, 23),
+(84, 10),
+(84, 30),
+(84, 35),
+(84, 1),
+(85, 36),
+(85, 21),
+(85, 25),
+(85, 41),
+(85, 38),
+(85, 40),
+(85, 14),
+(85, 6),
+(85, 28),
+(85, 18),
+(85, 22),
+(85, 9),
+(85, 15),
+(85, 29),
+(85, 13),
+(85, 8),
+(85, 4),
+(85, 32),
+(85, 26),
+(85, 20);
+
 -- --------------------------------------------------------
 
 --
@@ -148,7 +202,7 @@ CREATE TABLE `room` (
 INSERT INTO `room` (`id`, `user1`, `user2`) VALUES
 (1, 0, 0),
 (2, 0, 0),
-(3, 0, 0),
+(3, 84, 85),
 (4, 0, 0),
 (5, 0, 0),
 (6, 0, 0),
@@ -178,12 +232,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `title`, `onoff`, `created_at`) VALUES
-(78, 'sdddadsaaaa111111111ad@freeemail.com', '$2y$10$Xk0kqwd6Axolk7cxYbGXW.Woa2nNmvqsTzD1B.sbO51mzkwb2QERe', 'sdddadsaaaa111111111ad@freeemail.com', NULL, NULL, '2021-12-27 02:51:10'),
-(79, 'sadsad@freeemail.com', '$2y$10$XZdJ7LJ7J5gSR4tP.6VNgehwl2bgehS.ujDclsFqqGtf6cj1RblEC', 'sadsad@freeemail.com', NULL, NULL, '2021-12-29 00:04:00'),
-(80, 'sdddadsaaaaad@freeemail.com', '$2y$10$fVYBJt0TG.zsgqenIGWV1ekb19WkTQN/nvuSxZkLN8/FYyUkZQYCS', 'sdddadsaaaaad@freeemail.com', NULL, NULL, '2021-12-29 04:05:45'),
 (81, 'plero', '$2y$10$HDZ9Ol2B2/gMX7cY2diCfeIjCRELf4KYi115DVm2KNY5nvfyFb2TW', '123@gmail.com', NULL, NULL, '2021-12-29 04:16:59'),
-(82, '', '$2y$10$/IAFtP/63nnT8lI5N5mXpOrc4vgH377b5GmpczgEzM16f8nE.chdS', '', NULL, NULL, '2021-12-30 06:10:28'),
-(83, 'gogo', '$2y$10$Ll4xmKpiMFzJa.obDHw1wezFeukjdt.pqabvhxsIGb3tcze0aUNFW', 'gogo123@email.com', NULL, NULL, '2022-01-11 16:21:24');
+(83, 'gogo', '$2y$10$Ll4xmKpiMFzJa.obDHw1wezFeukjdt.pqabvhxsIGb3tcze0aUNFW', 'gogo123@email.com', NULL, NULL, '2022-01-11 16:21:24'),
+(84, 'Chrome', '$2y$10$Azt0nM0d8IXPv.0g287/x.aPSzixjFJ0AET92JWsJxFx4PuEW0mfK', '', NULL, NULL, '2022-01-14 16:25:13'),
+(85, 'Edge', '$2y$10$C4OXJcrauLJmaKXVpIV1v.Nx1smzQMl84E8NDCCImLkxnRo7HT4xa', 'edge@email.com', NULL, NULL, '2022-01-14 16:34:16'),
+(86, 'user1', '$2y$10$0DUfk/Tbm8Mch.SPL2f7ZOcLUZIXCQ7kUW2C07/zuR8DvPAPOZWfG', 'email@email.com', NULL, NULL, '2022-01-14 21:31:32');
 
 --
 -- Indexes for dumped tables
@@ -240,7 +293,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

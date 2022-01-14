@@ -1,5 +1,5 @@
 $(document).on('submit', '#sign_up_form', function(){ 
-	$.ajax({url: "/aa/adise2021/routre.php/register", 
+	$.ajax({url: "/ADISE21_moutz/routre.php/register", 
 		method: 'POST',
 		dataType: "json",
 		contentType: 'application/json',
@@ -25,7 +25,7 @@ $(document).on('submit', '#sign_up_form', function(){
 
 
 $(document).on('submit', '#login_form', function(){ 
-$.ajax({url: "/aa/adise2021/routre.php/login", 
+$.ajax({url: "/ADISE21_moutz/routre.php/login", 
    method: 'POST',
    dataType: "json",
    contentType: 'application/json',
@@ -47,7 +47,7 @@ return false;
 
 $(document).ready(function(){ 
 var jwt = getCookie('jwt');  
-$.ajax({url: "/aa/adise2021/routre.php/validate", 
+$.ajax({url: "/ADISE21_moutz/routre.php/validate", 
    method: 'POST',
    dataType: "json",
    contentType: 'application/json',
