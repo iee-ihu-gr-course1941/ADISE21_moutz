@@ -7,11 +7,11 @@
         private $user = 'root';
         private $pass = '';
         private $conn;
-        echo "c";
+        // echo "c";
         public function connect()
         {
             $this->conn = null;
-            echo "b";
+            // echo "b";
 
 if(gethostname()=='users.iee.ihu.gr') {
     $this->conn =new mysqli($this->host, $this->user,$this->pass, $this->db,null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
