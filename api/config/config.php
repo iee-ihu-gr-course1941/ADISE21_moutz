@@ -13,12 +13,9 @@
             $this->conn = null;
             
 
-            $user=$DB_USER;
-$pass=$DB_PASS;
-
-
 if(gethostname()=='users.iee.ihu.gr') {
     $this->conn =new mysqli($this->host, $this->user,$this->pass, $this->db,null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
+    echo "a";
 } else {
     $this->conn =new mysqli($this->host, $this->user, $this->pass, $this->db);
 }
