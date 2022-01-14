@@ -129,8 +129,8 @@ body {
   z-index: 20;
 }
 
-.card.hearts,
-.card.diamonds {
+.card.H,
+.card.D {
   color: red;
 }
 
@@ -161,10 +161,12 @@ body {
 }
 
 .leaveDiv {
-  align-self: center;
+  align-self: flex-end;
 }
 
 .gameButtons{
+  
   display: flex;
-  gap: 15rem;
+  width: 100%;
+  justify-content: space-between;
 }

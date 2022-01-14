@@ -3,15 +3,13 @@ html{
     
 }
 
-
-
 /* MAIN MENU */
 .main_menu{
     display: flex;
     position: absolute;
     width: 550px;
-    height: 88vh;
-    top: 45px;
+    height: 55vh;
+    top: 100px;
     left: 24.5em;
     background-color: #0096c7;
     backdrop-filter: blur(10px);
@@ -19,6 +17,10 @@ html{
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     transition: .3s;
     border-radius: 10px;
+}
+
+.menuTrans{
+    height: 75vh;
 }
 
 .mm_active{
@@ -81,13 +83,6 @@ html{
 #bot_btn:hover{
     background-color: #535353;
 }
-
-#pl_fr_btn{
-    background-color: #3da859;
-}
-
-#pl_fr_btn:hover{
-    background-color: #318d49;}
 
 .roomContainer{
     background-color: #055f7e;
