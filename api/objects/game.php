@@ -342,13 +342,14 @@ class Game
                 WHERE card_id = ?";
                         $stmt = $this->conn->prepare($query);
                         $card = implode(", ", $cards[$i]);
-                        echo $pcrads[$i];
+                        // echo $pcrads[$i];
                         $stmt->bindParam(1, $card);
 
                         $stmt->execute();
                     }
                 }
 
+                
                 return true;
             } else {
                 return false;
@@ -467,12 +468,13 @@ class Game
                 $stmt->bindParam(1, $this->id);
 
                 if ($stmt->execute()) {
-                    $users = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if (!($card['user_id'] == $users['id'])) {
-                        $this->winner = $users['username'];
-                    } else {
-                        $this->winner = $users['username'];
+                    $users[1] = $stmt->fetch(PDO::FETCH_ASSOC);
+                     $users[2] = $stmt->fetch(PDO::FETCH_ASSOC);
+                    // print_r($users);
+                    if (!($card['user_id'] == $users[1]['id'])) {
+                        $this->winner = $users[1]['username'];
+                    } else{
+                        $this->winner = $users[2]['username'];
                     }
 
                     return true;
@@ -568,22 +570,22 @@ class Game
                 FROM " . $this->table_name . "";
                 $stmt = $this->conn->prepare($query);
                 $stmt->execute();
-                // if ($stmt->execute()){
-                //     $query = "DELETE
-                //     FROM " . $this->table_name4 . "
-                //     where roomid= ?";
-                //     $stmt = $this->conn->prepare($query);
-                //     $stmt->bindParam(1, $this->id);
-                //     if ($stmt->execute()){
-                // return true;
-                // }else {
-                //     return false;}
+                if ($stmt->execute()){
+                    $query = "DELETE
+                    FROM " . $this->table_name4 . "
+                    where roomid= ?";
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->bindParam(1, $this->id);
+                    if ($stmt->execute()){
+                return true;
+                }else {
+                    return false;}
                 return true;
             } else {
                 return false;}
-            // } else {
-            //     return false;
+            } else {
+                return false;
             }
-        // }
+        }
     
 }
