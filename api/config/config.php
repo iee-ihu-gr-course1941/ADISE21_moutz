@@ -12,14 +12,21 @@
         {
             $this->conn = null;
             
-            try(gethostname()=='users.iee.ihu.gr')
-            {
-                $this->conn = new PDO($this->host,$this->db,$this->user,$this->pass);
-                $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            }catch(PDOException $e)
-            {
-                echo 'Connection Error : '. $e->getMessage();
-            }
+
+            $user=$DB_USER;
+$pass=$DB_PASS;
+
+
+if(gethostname()=='users.iee.ihu.gr') {
+    $this->conn =new mysqli($this->host, $this->user,$this->pass, $this->db,null,'/home/staff/asidirop/mysql/run/mysql.sock');
+} else {
+    $this->conn =new mysqli($this->host, $this->user, $this->pass, $this->db);
+}
+
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: (" . 
+    $mysqli->connect_errno . ") " . $mysqli->connect_error;
+}
             return $this->conn;
         }
     }
