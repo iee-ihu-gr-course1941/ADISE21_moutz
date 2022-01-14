@@ -2,7 +2,7 @@
 require 'api/config/config.php';
 
 $request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
-// print_r($request_uri);
+print_r($request_uri);
 switch ($request_uri[0]) {
         // login main page
     case '/~it185222/ADISE21_moutz/routre.php/login':
