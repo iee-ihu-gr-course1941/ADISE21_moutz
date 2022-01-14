@@ -15,7 +15,6 @@ body{
 form{
     display: flex;
     flex-direction: column;
-    height: 500px;
     width: 400px;
     background-color: #0096c7;
     position: absolute;

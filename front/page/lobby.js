@@ -3,6 +3,7 @@ var jwt = getCookie("jwt");
 var isSecond = false;
 var roomsWrap = document.querySelector(".main_btns");
 var btn_state = 1;
+var userName = document.querySelector(".username-main");
 
 //Stop strings from OverFlowing
 function OverflowString() {
@@ -69,7 +70,7 @@ $(document).on("click", "#play_btn", function () {
   //AJAX request that shows all rooms
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/getrooms",
+    url: "/ADISE21_moutz/routre.php/getrooms",
     dataType: "json",
     data: JSON.stringify({ jwt: jwt }),
     contentType: "application/json",
@@ -128,30 +129,48 @@ $(document).on("click", "#play_btn", function () {
 function clickFunct(num, isSecond) {
   $.ajax({
     method: "POST",
-    url: "/aa/adise2021/routre.php/joinroom",
+    url: "/ADISE21_moutz/routre.php/joinroom",
     dataType: "json",
     contentType: "application/json",
     data: JSON.stringify({ room: num, jwt: jwt }),
     success: function () {
-
       //Request to start game and render my cards for the first time
       $.ajax({
         method: "POST",
-        url: "/aa/adise2021/routre.php/startgame",
+        url: "/ADISE21_moutz/routre.php/startgame",
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify({ jwt: jwt, room: num }),
         success: function () {
           console.log("Both users joined");
-          
-        }
+        },
       });
-      
-      window.location = `/aa/adise2021/front/page/game/game.html?lobbyId=${num}`;
+
+      window.location = `/ADISE21_moutz/front/page/game/game.html?lobbyId=${num}`;
     },
     error: function () {
       alert("Something went wrong :(");
     },
+  });
+}
+
+getUsername();
+
+function getUsername() {
+  $.ajax({
+    method: "POST",
+    url: "/ADISE21_moutz/routre.php/getusername",
+    dataType: "json",
+    contentType: "application/json",
+    data: JSON.stringify({ jwt: jwt }),
+    success: function (success) {
+      console.log("yee");
+      console.log(success.data)
+      userName.innerHTML = success.data;
+    },
+    error: function(){
+      console.log("error on getting username")
+    }
   });
 }
 
