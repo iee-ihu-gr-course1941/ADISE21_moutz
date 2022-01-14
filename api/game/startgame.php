@@ -27,15 +27,17 @@ if ($jwt) {
 
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $game->idu =$decoded->data->id;
-        if ($game->startgame() & $game->showdeck()) {
+        if ($game->startgame() && $game->showdeck()) {
            
            
-               
-            $room = array("data" => array(
-                "id" => $game->id,
-                "cards" => $game->deck
-            ));
-            print_r($room);
+            
+            echo json_encode(
+                array(
+                    "id" => $decoded->data->id,
+                    "cards" => $game->cards
+                )
+            );
+            // print_r($room);
             http_response_code(200);
 
             echo json_encode(array("message" => "game was started."));
