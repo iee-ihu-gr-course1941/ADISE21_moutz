@@ -5,7 +5,6 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 include_once 'api/objects/game.php';
-
 include_once 'api/config/core.php';
 include_once 'api/libs/src/BeforeValidException.php';
 include_once 'api/libs/src/ExpiredException.php';
@@ -18,18 +17,23 @@ $database = new DB();
 $db = $database->connect();
 $data = json_decode(file_get_contents("php://input"));
 $jwt = isset($data->jwt) ? $data->jwt : "";
-
 $game = new Game($db);
 $game->id = $data->room;
-
 if ($jwt) {
 
     try {
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-        $game->idu =$decoded->data->id;
-        if ($game->selectrandom()) {
 
-            echo json_encode(array("message" => "card was selected."));
+        $decoded = JWT::decode($jwt, $key, array('HS256'));
+        // print_r($decoded);
+        if ($game->gettrun()) {
+              
+            echo json_encode(
+                array(
+                    "userturn" => $game->uturn
+
+                )
+            );
+
             http_response_code(200);
         } else {
 
@@ -39,14 +43,26 @@ if ($jwt) {
         }
     } catch (Exception $e) {
 
-        http_response_code(401);
+        if($e->getMessage() == "Expired token"){
+            list($header, $payload, $signature) = explode(".", $jwt);
+            $payload = json_decode(base64_decode($payload));
+            $refresh_token = $payload->data->refresh_token;
+        }else{
 
+            http_response_code(401);
+    
+            echo json_encode(array(
+                "message" => "Access denied.",
+                "error" => $e->getMessage()
+            ));
+          
         echo json_encode(array(
             "message" => "Access denied.",
             "error" => $e->getMessage()
         ));
     }
-} else {
+}
+}else{
 
     http_response_code(401);
 

@@ -40,6 +40,21 @@ switch ($request_uri[0]) {
     case '/aa/adise2021/routre.php/selectrandom':
         require 'api/game/selectrandom.php';
         break;
+    case '/aa/adise2021/routre.php/showdeck':
+        require 'api/game/showdeck.php';
+        break;
+     case '/aa/adise2021/routre.php/getwinner':
+        require 'api/game/getwinner.php';
+        break;    
+    case '/aa/adise2021/routre.php/playerturn':
+        require 'api/game/turn.php';
+        break;        
+        case '/aa/adise2021/routre.php/changeturn':
+            require 'api/game/changeturn.php';
+            break; 
+             case '/aa/adise2021/routre.php/leavegame':
+            require 'api/game/leavegame.php';
+            break;          
         // Everything else
     default:
         header('HTTP/1.0 404 Not Found');

@@ -16,12 +16,31 @@ class Game
     public $idu;
     public $id;
     public $deck;
+    public $cards;
+    public $winner;
+    public $uturn;
     // constructor $db connection
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    function gettrun()
+    {
+
+        $query = "SELECT u.username
+        FROM " . $this->table_name4 . " a
+        JOIN " . $this->table_name5 . " u on a.playerturn=u.id
+        where roomid = ?;";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+        if ($stmt->execute()) {
+            $this->uturn = $stmt->fetch(PDO::FETCH_ASSOC);
+            return true;
+        } else {
+            return false;
+        }
+    }
     function getallrooms() //f
     {
 
@@ -70,19 +89,17 @@ class Game
 
             $stmt->bindParam(1, $this->idu);
 
-            if($stmt->execute())
-            {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->id = $row['id'];
-            return true;
-            }else
-            {
+            if ($stmt->execute()) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->id = $row['id'];
+                return true;
+            } else {
                 return false;
             }
         }
         return false;
     }
-    function joinroom()//f
+    function joinroom() //f
     {
         $query = "SELECT id
         FROM " . $this->table_name3 . "
@@ -111,21 +128,21 @@ class Game
                 return false;
             }
         } else {
-        
+
             $query = "SELECT id
         FROM " . $this->table_name3 . "
-        WHERE id  = ? and user2 = 0 AND NOT user2 = ?";
+        WHERE id  = ? and user2 = 0 AND NOT user1 = ? AND NOT user2 = ?";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(2,  $this->idu);
             $stmt->bindParam(1, $this->id);
-
+            $stmt->bindParam(3,  $this->idu);
             $stmt->execute();
 
             $num = $stmt->rowCount();
-            
+
             if ($num > 0) {
-                
+
                 $query = "UPDATE " . $this->table_name3 . "
                                 SET user2 = ?
                                 WHERE id = ?";
@@ -143,7 +160,7 @@ class Game
                 return false;
         }
     }
-    function startgame() //f?
+    function startgame() //f
     {
         $query = "SELECT user1 , user2
         FROM " . $this->table_name3 . "
@@ -156,115 +173,101 @@ class Game
         $stmt->bindParam(1, $this->id);
 
         $stmt->execute();
-        $user[1] = $stmt->fetch(PDO::FETCH_ASSOC);
-        $user[2] = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userid1 = implode(", ", $user[1]);
-        $query = "UPDATE " . $this->table_name4 . "
-                    SET
-                    gamestatus = 1
-                     WHERE roomid = ?";
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
+        $query = "SELECT roomid
+        FROM " . $this->table_name4 . "
+        WHERE roomid  = ?";
         $stmt = $this->conn->prepare($query);
+
 
         $this->id = htmlspecialchars(strip_tags($this->id));
 
         $stmt->bindParam(1, $this->id);
 
-        if ($stmt->execute()) {
-            $cards = [];
-
-            $query = "SELECT id
-                     FROM " . $this->table_name2 . "";
+        $stmt->execute();
+        $l = $stmt->rowCount();
+        if ($l == 0 && ($user['user1'] > 0 && $user['user2'] > 0)) {
+            $query = "INSERT INTO " . $this->table_name4 . "
+               (roomid, playerturn, gamestatus)
+                        VALUES (
+                         ?,
+                         ?,
+                         1
+                     );";
 
             $stmt = $this->conn->prepare($query);
 
 
-            $stmt->execute();
+            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam(2, $user['user1']);
 
-            $num = $stmt->rowCount();
+            if ($stmt->execute()) {
+                $cards = [];
 
-            for ($i = 1; $i <= $num; $i++) {
+                $query = "SELECT id
+                     FROM " . $this->table_name2 . "";
+
+                $stmt = $this->conn->prepare($query);
 
 
-                $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
-            }
+                $stmt->execute();
+
+                $num = $stmt->rowCount();
+
+                for ($i = 1; $i <= $num; $i++) {
 
 
-            for ($i = 1; $i <= 500; $i++) {
-                $l1 = rand(1, $num);
-                $l2 = rand(1, $num);
-                $tmp = $cards[$l1];
-                $cards[$l1] = $cards[$l2];
-                $cards[$l2] = $tmp;
-            }
-            $uid1 = $userid1[0];
+                    $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
 
-            $uid2 = $userid1[3];
-            for ($i = 1; $i <= $num; $i++) {
-                $card_id = implode(", ", $cards[$i]);
-                // echo  $card_id;
-                if ($i <= 21) {
-                    $query = "INSERT INTO " . $this->table_name . "
+
+                for ($i = 1; $i <= 500; $i++) {
+                    $l1 = rand(1, $num);
+                    $l2 = rand(1, $num);
+                    $tmp = $cards[$l1];
+                    $cards[$l1] = $cards[$l2];
+                    $cards[$l2] = $tmp;
+                }
+                for ($i = 1; $i <= $num; $i++) {
+                    $card_id = implode(", ", $cards[$i]);
+                    // echo  $card_id;
+                    if ($i <= 21) {
+                        $query = "INSERT INTO " . $this->table_name . "
                              SET
                              user_id = :user_id,
                              card_id = :card_id";
 
-                    $stmt = $this->conn->prepare($query);
+                        $stmt = $this->conn->prepare($query);
 
 
 
-                    $stmt->bindParam(':user_id', $uid1);
-                    $stmt->bindParam(':card_id', $card_id);
-                    $stmt->execute();
-                } else {
-                    $query = "INSERT INTO " . $this->table_name . "
+                        $stmt->bindParam(':user_id', $user['user1']);
+                        $stmt->bindParam(':card_id', $card_id);
+                        $stmt->execute();
+                    } else {
+                        $query = "INSERT INTO " . $this->table_name . "
                                 SET
                                 user_id = :user_id,
                                 card_id = :card_id";
 
-                    $stmt = $this->conn->prepare($query);
+                        $stmt = $this->conn->prepare($query);
 
 
 
-                    $stmt->bindParam(':user_id', $uid2);
+                        $stmt->bindParam(':user_id', $user['user2']);
 
-                    $stmt->bindParam(':card_id', $card_id);
-                    $stmt->execute();
+                        $stmt->bindParam(':card_id', $card_id);
+                        $stmt->execute();
+                    }
                 }
+                return true;
+            } else {
+                return false;
             }
-            $query = "INSERT INTO " . $this->table_name4 . "
-                              (roomid  , playerturn ) 
-                                SELECT id ,user1
-                                FROM " . $this->table_name3 . "
-                                WHERE user1  = ? AND user2  = ?;
-                               ";
-
-            $stmt = $this->conn->prepare($query);
-
-
-            $stmt->bindParam(1, $uid1);
-            $stmt->bindParam(2, $uid2);
-
-            $stmt->execute();
-            $query = " SELECT id 
-            FROM " . $this->table_name3 . "
-            WHERE user1  = ?";
-            $stmt = $this->conn->prepare($query);
-
-
-            $stmt->bindParam(1, $uid1);
-
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->id = $row['id'];
-            return true;
         }
-
-
-        return false;
     }
-    function dropcards()
+    function dropcards() //f
     {
         $query = "SELECT playerturn
         FROM " . $this->table_name4 . "
@@ -273,85 +276,86 @@ class Game
 
         $stmt->bindParam(1, $this->id);
 
-        $stmt->execute();
+        if ($stmt->execute()) {
 
-        $player = $stmt->fetch(PDO::FETCH_ASSOC);
+            $player = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-        $query = "SELECT card_id
+            if ($this->idu == $player["playerturn"]) {
+                $query = "SELECT card_id
        FROM " . $this->table_name . "
        WHERE user_id = ?";
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(1, $player["playerturn"]);
-
-        $stmt->execute();
-        $num = $stmt->rowCount();
-
-        $cards = [];
-        for ($i = 1; $i <= $num; $i++) {
-            $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        // print_r( $cards);
-        $pcrads = [];
-        for ($i = 1; $i <= $num; $i++) {
-            $query = "SELECT v
-        FROM " . $this->table_name2 . "
-        WHERE id = ?";
-            $stmt = $this->conn->prepare($query);
-
-            $card = implode(", ", $cards[$i]);
-            //   echo $card;                              
-            $stmt->bindParam(1, $card);
-
-            $stmt->execute();
-            $pcradsid = $stmt->fetch(PDO::FETCH_ASSOC);
-            $pcrads[$i] = $pcradsid;
-        }
-        // print_r($pcrads);
-        for ($i = 1; $i <= $num; $i++) {
-            if (!($pcrads[$i] == 0)) {
-                $flag = true;
-                $j = $i + 1;
-                while ($flag && $j < $num) {
-                    // print_r($pcrads[$j] == $pcrads[$i]);
-                    // echo "/n";
-                    if ((($pcrads[$j] == $pcrads[$i]))) {
-                        $flag = false;
-                        // print_r($pcrads[$j]);
-                        // print_r($pcrads[$i]);
-                        $pcrads[$j] = 0;
-                        $pcrads[$i] = 0;
-                        $j++;
-                    }
-                    $j++;
-                }
-            }
-        }
-        // print_r($pcrads);
-        // echo "    ";
-
-        for ($i = 1; $i <= $num; $i++) {
-            if ($pcrads[$i] == 0) {
-
-                $query = "DELETE FROM " . $this->table_name . "
-                WHERE card_id = ?";
                 $stmt = $this->conn->prepare($query);
-                $card = implode(", ", $cards[$i]);
-                echo $pcrads[$i];
-                $stmt->bindParam(1, $card);
+
+                $stmt->bindParam(1, $player["playerturn"]);
 
                 $stmt->execute();
+                $num = $stmt->rowCount();
+
+                $cards = [];
+                for ($i = 1; $i <= $num; $i++) {
+                    $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
+                // print_r( $cards);
+                $pcrads = [];
+                for ($i = 1; $i <= $num; $i++) {
+                    $query = "SELECT v
+        FROM " . $this->table_name2 . "
+        WHERE id = ?";
+                    $stmt = $this->conn->prepare($query);
+
+                    $card = implode(", ", $cards[$i]);
+                    //   echo $card;                              
+                    $stmt->bindParam(1, $card);
+
+                    $stmt->execute();
+                    $pcradsid = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $pcrads[$i] = $pcradsid;
+                }
+                // print_r($pcrads);
+                for ($i = 1; $i <= $num; $i++) {
+                    if (!($pcrads[$i] == 0)) {
+                        $flag = true;
+                        $j = $i + 1;
+                        while ($flag && $j <= $num) {
+                            // print_r($pcrads[$j] == $pcrads[$i]);
+                            // echo "/n";
+                            if ((($pcrads[$j] == $pcrads[$i]))) {
+                                $flag = false;
+                                // print_r($pcrads[$j]);
+                                // print_r($pcrads[$i]);
+                                $pcrads[$j] = 0;
+                                $pcrads[$i] = 0;
+                                $j++;
+                            }
+                            $j++;
+                        }
+                    }
+                }
+
+                // print_r($pcrads);
+                // echo "    ";
+
+                for ($i = 1; $i <= $num; $i++) {
+                    if ($pcrads[$i] == 0) {
+
+                        $query = "DELETE FROM " . $this->table_name . "
+                WHERE card_id = ?";
+                        $stmt = $this->conn->prepare($query);
+                        $card = implode(", ", $cards[$i]);
+                        echo $pcrads[$i];
+                        $stmt->bindParam(1, $card);
+
+                        $stmt->execute();
+                    }
+                }
+
+                return true;
             } else {
+                return false;
             }
         }
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
     }
-    function selectrandom()
+    function selectrandom() //f
     {
 
         $query = "SELECT playerturn
@@ -363,105 +367,223 @@ class Game
 
         $stmt->execute();
 
-        $player = $stmt->fetch(PDO::FETCH_ASSOC);
+        $player1 = $stmt->fetch(PDO::FETCH_ASSOC);
+        $query = "SELECT user1,user2
+        FROM " . $this->table_name3 . "
+        WHERE id = ? ";
+        $stmt = $this->conn->prepare($query);
 
-        if ($player["playerturn"] == $this->user1) {
-            $player2 = $this->user1;
-        } else {
-            $player = $this->user2;
-        }
-        $query = "SELECT card_id
+        $stmt->bindParam(1, $this->id);
+
+        $stmt->execute();
+
+        $players = $stmt->fetch(PDO::FETCH_ASSOC);
+        // print_r($player1);
+        if ($this->idu == $player1["playerturn"]) {
+            if (!($player1['playerturn'] == $players['user1'])) {
+                $player2 = $players['user1'];
+            } else {
+                $player2 = $players['user2'];
+            }
+
+            $query = "SELECT card_id
         FROM " . $this->table_name . "
         WHERE user_id = ?";
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(1, $player2);
-
-        $stmt->execute();
-        $num = $stmt->rowCount();
-
-        $cards = [];
-        for ($i = 1; $i <= $num; $i++) {
-            $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        // print_r( $cards);
-        $pcrads = [];
-        for ($i = 1; $i <= $num; $i++) {
-            $query = "SELECT v
-     FROM " . $this->table_name2 . "
-        WHERE id = ?";
             $stmt = $this->conn->prepare($query);
 
-            $card = implode(", ", $cards[$i]);
-            //   echo $card;                              
-            $stmt->bindParam(1, $card);
+            $stmt->bindParam(1, $player2);
 
             $stmt->execute();
-            $pcradsid = $stmt->fetch(PDO::FETCH_ASSOC);
-            $pcrads[$i] = $pcradsid;
-        }
-        $flag = true;
+            $num = $stmt->rowCount();
 
-        while ($flag) {
-
-            $l1 = rand(1, $num);
+            $cards = [];
             for ($i = 1; $i <= $num; $i++) {
-                if ($l1 == implode(", ", $pcrads[$i])) {
-                    $flag = false;
-                }
+                $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
             }
-        }
+            $l1 = rand(1, $num);
 
-
-        $query = "UPDATE " . $this->table_name . "
+            // print_r($cards[$l1]);
+            $query = "UPDATE " . $this->table_name . "
             SET user_id = ?
             WHERE card_id = ?";
-        $stmt = $this->conn->prepare($query);
-        $card = implode(", ", $cards[$l1]);
+            $stmt = $this->conn->prepare($query);
+            $card = implode(", ", $cards[$l1]);
 
-        $stmt->bindParam(2, $card);
-        $stmt->bindParam(1, $player["playerturn"]);
-        $stmt->execute();
+            $stmt->bindParam(2, $card);
+            $stmt->bindParam(1, $player1['playerturn']);
+
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    function showdeck() //f
+    {
+        $query = "SELECT p.user_id , c.v , c.c
+        FROM " . $this->table_name . " p
+        JOIN " . $this->table_name2 . " c ON p.card_id = c.id";
+        $stmt = $this->conn->prepare($query);
 
         if ($stmt->execute()) {
+            $num = $stmt->rowCount();
+
+            for ($i = 1; $i <= $num; $i++) {
+                $this->cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
+            }
             return true;
         } else {
             return false;
         }
     }
-    function showdeck()
+    function getwinner() //F
     {
-        $query = "SELECT card_id
-        FROM " . $this->table_name . "
-        WHERE user_id = ?";
+
+        $query = "SELECT c.v ,p.user_id 
+        FROM " . $this->table_name . " p
+        JOIN " . $this->table_name2 . " c ON p.card_id = c.id";
+        $stmt = $this->conn->prepare($query);
+        if ($stmt->execute()) {
+            $card = $stmt->fetch(PDO::FETCH_ASSOC);
+            $num = $stmt->rowCount();
+
+            if ($num == 1 && $card['v'] == "K") {
+                $query = " UPDATE " . $this->table_name4 . "
+                     SET gamestatus = 2
+                     WHERE roomid = ?
+                                   ";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(1, $this->id);
+                $stmt->execute();
+
+                $query = "SELECT u.username ,u.id
+                            FROM " . $this->table_name3 . " r
+                            join " . $this->table_name5  . " u on r.user1=u.id or r.user2=u.id 
+                            where r.id = ?";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(1, $this->id);
+
+                if ($stmt->execute()) {
+                    $users = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if (!($card['user_id'] == $users['id'])) {
+                        $this->winner = $users['username'];
+                    } else {
+                        $this->winner = $users['username'];
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
+    }
+    function changeturn()
+    {
+
+
+        $query = "SELECT playerturn
+        FROM " . $this->table_name4 . "
+        WHERE roomid = ? ";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(1, $this->idu);
+        $stmt->bindParam(1, $this->id);
 
         $stmt->execute();
-        $num = $stmt->rowCount();
 
-        $cards = [];
-        for ($i = 1; $i <= $num; $i++) {
-            $cards[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        // print_r( $cards);
-        $pcrads = [];
-        for ($i = 1; $i <= $num; $i++) {
-            $query = "SELECT 
-         FROM " . $this->table_name2 . "
-         WHERE id = ?";
+        $player1 = $stmt->fetch(PDO::FETCH_ASSOC);
+        $query = "SELECT user1,user2
+        FROM " . $this->table_name3 . "
+        WHERE id = ? ";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1, $this->id);
+
+        $stmt->execute();
+
+        $players = $stmt->fetch(PDO::FETCH_ASSOC);
+        // print_r($player1);
+        if ($this->idu == $player1["playerturn"]) {
+            if (!($player1['playerturn'] == $players['user1'])) {
+                $player2 = $players['user1'];
+            } else {
+                $player2 = $players['user2'];
+            }
+
+            $query = " UPDATE " . $this->table_name4 . "
+                     SET playerturn = ?
+                     WHERE roomid = ?";
             $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(1, $player2);
+            $stmt->bindParam(2, $this->id);
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
 
-            $card = implode(", ", $cards[$i]);
-            //   echo $card;                              
-            $stmt->bindParam(1, $card);
-
-            $stmt->execute();
-            $pcradsid = $stmt->fetch(PDO::FETCH_ASSOC);
-            $pcrads[$i] = $pcradsid;
+            return false;
         }
-        $this->deck = $pcrads;
-        return true;
+        return false;
     }
+    function leavegame()
+    {
+        $query = "SELECT user1,user2
+        FROM " . $this->table_name3 . "
+        WHERE id = ? ";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1, $this->id);
+
+        $stmt->execute();
+
+        $players = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($this->idu == $players["user1"]) {
+            $query = " UPDATE " . $this->table_name3 . "
+                     SET user1 = 0
+                     WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+       
+            $stmt->bindParam(1, $this->id);
+            }elseif($this->idu == $players["user2"]){
+                 $query = " UPDATE " . $this->table_name3 . "
+                     SET user2 = 0
+                     WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+           
+            $stmt->bindParam(1, $this->id);
+            
+            }else
+            {
+                return false;
+            }
+            if ($stmt->execute()) {
+                $query = "DELETE
+                FROM " . $this->table_name . "";
+                $stmt = $this->conn->prepare($query);
+                $stmt->execute();
+                // if ($stmt->execute()){
+                //     $query = "DELETE
+                //     FROM " . $this->table_name4 . "
+                //     where roomid= ?";
+                //     $stmt = $this->conn->prepare($query);
+                //     $stmt->bindParam(1, $this->id);
+                //     if ($stmt->execute()){
+                // return true;
+                // }else {
+                //     return false;}
+                return true;
+            } else {
+                return false;}
+            // } else {
+            //     return false;
+            }
+        // }
+    
 }
