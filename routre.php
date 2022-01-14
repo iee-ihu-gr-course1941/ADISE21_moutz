@@ -57,6 +57,7 @@ switch ($request_uri[0]) {
         require 'api/game/leavegame.php';
         break;        
     case '/~it185222/ADISE21_moutz/routre.php/getusername':
+        print_r($request_uri);
         require 'api/user/getUsername.php';
         break;
             
