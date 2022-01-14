@@ -3,18 +3,18 @@
    class DB
     {
         private $host = 'localhost';
-        private $DB_name = 'adise2021';
-        private $username = 'root';
-        private $password = '';
+        private $db = 'adise2021';
+        private $user = 'root';
+        private $pass = '';
         private $conn;
         
         public function connect()
         {
             $this->conn = null;
             
-            try
+            try(gethostname()=='users.iee.ihu.gr')
             {
-                $this->conn = new PDO('mysql:host='.$this->host.';dbname='.$this->DB_name,$this->username,$this->password);
+                $this->conn = new PDO($this->host,$this->db,$this->user,$this->pass);
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }catch(PDOException $e)
             {
