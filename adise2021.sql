@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Εξυπηρετητής: 127.0.0.1
--- Χρόνος δημιουργίας: 10 Ιαν 2022 στις 20:15:34
--- Έκδοση διακομιστή: 10.4.22-MariaDB
--- Έκδοση PHP: 7.4.26
+-- Host: 127.0.0.1
+-- Generation Time: Jan 14, 2022 at 01:05 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Βάση δεδομένων: `adise2021`
+-- Database: `adise2021`
 --
 
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `activerooms`
+-- Table structure for table `activerooms`
 --
 
 CREATE TABLE `activerooms` (
@@ -33,32 +33,10 @@ CREATE TABLE `activerooms` (
   `gamestatus` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Άδειασμα δεδομένων του πίνακα `activerooms`
---
-
-INSERT INTO `activerooms` (`roomid`, `playerturn`, `gamestatus`) VALUES
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(2, 0, 0),
-(1, 1, 1),
-(1, 1, 0);
-
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `cards`
+-- Table structure for table `cards`
 --
 
 CREATE TABLE `cards` (
@@ -68,7 +46,7 @@ CREATE TABLE `cards` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Άδειασμα δεδομένων του πίνακα `cards`
+-- Dumping data for table `cards`
 --
 
 INSERT INTO `cards` (`id`, `v`, `c`) VALUES
@@ -117,7 +95,7 @@ INSERT INTO `cards` (`id`, `v`, `c`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `friends`
+-- Table structure for table `friends`
 --
 
 CREATE TABLE `friends` (
@@ -129,7 +107,7 @@ CREATE TABLE `friends` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Άδειασμα δεδομένων του πίνακα `friends`
+-- Dumping data for table `friends`
 --
 
 INSERT INTO `friends` (`id`, `id_senter`, `id_receiver`, `accepted`, `created_at`) VALUES
@@ -143,7 +121,7 @@ INSERT INTO `friends` (`id`, `id_senter`, `id_receiver`, `accepted`, `created_at
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `playercards`
+-- Table structure for table `playercards`
 --
 
 CREATE TABLE `playercards` (
@@ -154,7 +132,7 @@ CREATE TABLE `playercards` (
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `room`
+-- Table structure for table `room`
 --
 
 CREATE TABLE `room` (
@@ -164,30 +142,25 @@ CREATE TABLE `room` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Άδειασμα δεδομένων του πίνακα `room`
+-- Dumping data for table `room`
 --
 
 INSERT INTO `room` (`id`, `user1`, `user2`) VALUES
-(1, 1, 2),
+(1, 0, 0),
 (2, 0, 0),
-(3, 5, 0),
-(4, 7, 0),
-(5, 8, 0),
-(6, 6, 0),
-(7, 44, 0),
-(8, 45, 0),
-(9, 41, 0),
-(10, 46, 0),
-(11, 433, 0),
-(12, 4343, 0),
-(13, 0, 4344),
-(14, 43244, 432444),
-(15, 221, 0);
+(3, 0, 0),
+(4, 0, 0),
+(5, 0, 0),
+(6, 0, 0),
+(7, 0, 0),
+(8, 0, 0),
+(9, 0, 0),
+(10, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -201,7 +174,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Άδειασμα δεδομένων του πίνακα `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `title`, `onoff`, `created_at`) VALUES
@@ -209,64 +182,65 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `title`, `onoff`, `c
 (79, 'sadsad@freeemail.com', '$2y$10$XZdJ7LJ7J5gSR4tP.6VNgehwl2bgehS.ujDclsFqqGtf6cj1RblEC', 'sadsad@freeemail.com', NULL, NULL, '2021-12-29 00:04:00'),
 (80, 'sdddadsaaaaad@freeemail.com', '$2y$10$fVYBJt0TG.zsgqenIGWV1ekb19WkTQN/nvuSxZkLN8/FYyUkZQYCS', 'sdddadsaaaaad@freeemail.com', NULL, NULL, '2021-12-29 04:05:45'),
 (81, 'plero', '$2y$10$HDZ9Ol2B2/gMX7cY2diCfeIjCRELf4KYi115DVm2KNY5nvfyFb2TW', '123@gmail.com', NULL, NULL, '2021-12-29 04:16:59'),
-(82, '', '$2y$10$/IAFtP/63nnT8lI5N5mXpOrc4vgH377b5GmpczgEzM16f8nE.chdS', '', NULL, NULL, '2021-12-30 06:10:28');
+(82, '', '$2y$10$/IAFtP/63nnT8lI5N5mXpOrc4vgH377b5GmpczgEzM16f8nE.chdS', '', NULL, NULL, '2021-12-30 06:10:28'),
+(83, 'gogo', '$2y$10$Ll4xmKpiMFzJa.obDHw1wezFeukjdt.pqabvhxsIGb3tcze0aUNFW', 'gogo123@email.com', NULL, NULL, '2022-01-11 16:21:24');
 
 --
--- Ευρετήρια για άχρηστους πίνακες
+-- Indexes for dumped tables
 --
 
 --
--- Ευρετήρια για πίνακα `cards`
+-- Indexes for table `cards`
 --
 ALTER TABLE `cards`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `friends`
+-- Indexes for table `friends`
 --
 ALTER TABLE `friends`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `room`
+-- Indexes for table `room`
 --
 ALTER TABLE `room`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT για άχρηστους πίνακες
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT για πίνακα `cards`
+-- AUTO_INCREMENT for table `cards`
 --
 ALTER TABLE `cards`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
--- AUTO_INCREMENT για πίνακα `friends`
+-- AUTO_INCREMENT for table `friends`
 --
 ALTER TABLE `friends`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT για πίνακα `room`
+-- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT για πίνακα `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

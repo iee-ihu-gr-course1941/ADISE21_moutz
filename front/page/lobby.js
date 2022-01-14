@@ -1,3 +1,9 @@
+//Variables
+var jwt = getCookie("jwt");
+var isSecond = false;
+var roomsWrap = document.querySelector(".main_btns");
+var btn_state = 1;
+
 //Stop strings from OverFlowing
 function OverflowString() {
   var strings = document.getElementsByTagName("span");
@@ -9,8 +15,6 @@ function OverflowString() {
     }
   }
 }
-
-var btn_state = 1;
 
 //Show and hide FriendList
 $(document).ready(function () {
@@ -47,6 +51,7 @@ $(document).ready(function () {
   });
 });
 
+//Search User
 const form = document.querySelector("form");
 $("#request").click(function () {
   if (document.getElementById("searchuser").innerHTML !== null) {
@@ -56,97 +61,114 @@ $("#request").click(function () {
   }
 });
 
-//Click on join lobby
-// var playBtn = document.getElementById("play_btn");
-// playBtn.addEventListener("click", function() {
-// $("#play_btn").click(function(){
-//     // $(document).on('play', '#play_btn', function(){
-//         $(".main_btns").hide();
-
-roomsWrap = document.querySelector(".main_btns");
-
-function clickFunct(num){
-  
-
-  $.ajax({
-    method: "POST",
-    url: "/aa/adise2021/routre.php/join",
-    dataType: "json",
-    contentType: 'application/json',
-    data: JSON.stringify({id : num}),
-    success: function(){
-      
-      window.location = `/aa/adise2021/front/page/game/game.html?lobbyId=${num}`;
-    },
-    error: function(){
-      alert("Something went wrong :(");
-    }
-  })
-}
-
+//Button 'Join Lobby' shows all lobbies
 $(document).on("click", "#play_btn", function () {
-  $(".btnH").hide();
+  $(".btnH").hide(); //Hide buttons on Menu
+  $(".main_menu").addClass("menuTrans");
 
-  var jwt = getCookie('jwt'); 
+  //AJAX request that shows all rooms
   $.ajax({
     method: "POST",
     url: "/aa/adise2021/routre.php/getrooms",
     dataType: "json",
-    data: JSON.stringify({jwt:jwt}),
+    data: JSON.stringify({ jwt: jwt }),
     contentType: "application/json",
     success: function (result) {
       console.log(result);
       results = result.rooms;
 
-      var temp = -1;
+      var temp = -1; //Arxikopoihsh tou temp
 
       for (roomsKey in results) {
-        console.log(results[roomsKey].id);
+        // console.log(results[roomsKey].id);
 
+        //Elegxos an uparxei hdh enas user mesa se auto to lobby
         if (temp != results[roomsKey].id) {
-          var htmlToAdd = `<div onclick="clickFunct(${results[roomsKey].id})" class="roomContainer">
-              <div class = "roomId">Room Id:  ${results[roomsKey].id} <br> </div>
-              <div class = "participants">Participant 1: ${results[roomsKey].username || ""}`;
+          var htmlToAdd = `<div onclick="clickFunct(${
+            results[roomsKey].id
+          },${isSecond})" class="roomContainer">
+              <div class = "roomId">Room Id:  ${
+                results[roomsKey].id
+              } <br> </div>
+              <div class = "participants">Participant 1: ${
+                results[roomsKey].username || ""
+              }`;
 
           htmlToAdd += `<br></div> <div class = "btnConnect">`;
-          
+
           htmlToAdd += `Active<a href="" class="aBtnA aBtn"></a></div>
           </div>`;
-          
-          temp = results[roomsKey].id
 
-          roomsWrap.innerHTML += htmlToAdd;
-        }else{
+          temp = results[roomsKey].id; //Apo8ikeush tou room(roomContainer) poy dhmiourgh8ke
 
-          var num = [...document.querySelectorAll('.participants')];
-          var last = num[num.length-1];
+          roomsWrap.innerHTML += htmlToAdd; //Pros8iki tou room(roomContainer) mesa sto container(roomsWrap) twn lobbies
 
-          last.innerHTML += `Participant 2: ${results[roomsKey].username}`
+          //An uparxei hdh enas user sto room pros8ese kai ton allon pou pathse to room
+        } else {
+          isSecond = true; //Metabliti pou deixnei oti einai o deuteros poy mphke sto game
 
-          document.querySelectorAll('.roomContainer')[num.length-1].classList.add('unclick');
+          var num = [...document.querySelectorAll(".participants")]; //Ola ta .participants se array morfh
+          var last = num[num.length - 1]; //Pare to teleutaio .participants pou dhmiourgh8hke
 
-          document.querySelectorAll('.btnConnect')[num.length-1].innerHTML = `Full<a href="" class="aBtnF aBtn"></a></div> </div>`;
+          last.innerHTML += `Participant 2: ${results[roomsKey].username}`; //Pros8ese ton kwdika gia to teleutaio user pou mphke
+          document
+            .querySelectorAll(".roomContainer")
+            [num.length - 1].classList.add("unclick"); //bale to class "unclick" sto room(roomContainer), opou to kanei unclickable
 
+          document.querySelectorAll(".btnConnect")[
+            num.length - 1
+          ].innerHTML = `Full<a href="" class="aBtnF aBtn"></a></div> </div>`;
         }
       }
-    }
+    },
   });
-  
 });
 
-function getCookie(cname){
+//Redirect from lobby to game
+function clickFunct(num, isSecond) {
+  $.ajax({
+    method: "POST",
+    url: "/aa/adise2021/routre.php/joinroom",
+    dataType: "json",
+    contentType: "application/json",
+    data: JSON.stringify({ room: num, jwt: jwt }),
+    success: function () {
+
+      //Request to start game and render my cards for the first time
+      $.ajax({
+        method: "POST",
+        url: "/aa/adise2021/routre.php/startgame",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({ jwt: jwt, room: num }),
+        success: function () {
+          console.log("Both users joined");
+          
+        }
+      });
+      
+      window.location = `/aa/adise2021/front/page/game/game.html?lobbyId=${num}`;
+    },
+    error: function () {
+      alert("Something went wrong :(");
+    },
+  });
+}
+
+//Get JWT cookie
+function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-     var c = ca[i];
-     while (c.charAt(0) == ' '){
-       c = c.substring(1);
-     }
-  
-     if (c.indexOf(name) == 0) {
-       return c.substring(name.length, c.length);
-     }
+  var ca = decodedCookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
   }
   return "";
-  }
+}

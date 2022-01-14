@@ -19,7 +19,7 @@
     <div id="gameWrapper">
       <!-- Player 1 -->
       <div id="Player1" class="deckWrapper">
-        <h1 class="PName">OPPONENT</h1>
+        <h1 class="PName" id="pname1">OPPONENT</h1>
 
         <div class="deck" data-deck>
           <div id="othersDeck"></div>
@@ -32,7 +32,7 @@
 
       <!-- Player 2 -->
       <div id="Player2" class="deckWrapper">
-        <h1 class="PName">ME</h1>
+        <h1 class="PName" id="pname2">ME</h1>
 
         <div class="deck">
           <div id="myDeck"></div>
@@ -47,15 +47,22 @@
         >
       </div>
 
+      <div class="getDiv">
+        <a href="#" class="button evenSpacingButt" id="getCard"
+          >Get card</a
+        >
+      </div>
+
       <div class="subDiv">
         <a href="#" class="button evenSpacingButt" id="submitPick">End Turn</a>
       </div>
     </div>
 
     <div class="leaveDiv">
-      <a href="#" class="button evenSpacingButt" id="button">Leave Game</a>
+      <a href="../lobby.html" class="button evenSpacingButt" id="leaveGameBtn">Leave Game</a>
     </div>
 
+    <!-- href="../lobby.html" -->
     <script src="game.js"></script>
   </body>
 </html>
