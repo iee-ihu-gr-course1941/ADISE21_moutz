@@ -18,7 +18,7 @@ $pass=$DB_PASS;
 
 
 if(gethostname()=='users.iee.ihu.gr') {
-    $this->conn =new mysqli($this->host, $this->user,$this->pass, $this->db,null,'/home/staff/asidirop/mysql/run/adise2021.sql');
+    $this->conn =new mysqli($this->host, $this->user,$this->pass, $this->db,null,'/home/staff/asidirop/mysql/run/adise2021.sock');
 } else {
     $this->conn =new mysqli($this->host, $this->user, $this->pass, $this->db);
 }
