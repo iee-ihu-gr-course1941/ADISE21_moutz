@@ -71,6 +71,7 @@ switch ($request_uri[0]) {
         break;
         
 }
+}
 catch (Exception $e){
 	 
     http_response_code(401);
@@ -80,4 +81,3 @@ catch (Exception $e){
 	        "error" => $e->getMessage()
 	    ));
 	}
-}
