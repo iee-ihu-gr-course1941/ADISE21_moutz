@@ -17,7 +17,7 @@
                 if(gethostname()=='users.iee.ihu.gr') {
                     $this->conn =new PDO('mysql:host='.$this->host,';dbname='.$this->db,$this->user,$this->pass);
                 }else{
-                $this->conn = new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->username,$this->pass);
+                    $this->conn =new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->user,$this->pass);
             }
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }catch(PDOException $e)
