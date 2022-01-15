@@ -21,9 +21,9 @@ if(gethostname()=='users.iee.ihu.gr') {
     $this->conn =new mysqli($this->host, $this->user, $this->pass, $this->db);
 }
 
-if ($this.conn->connect_errno) {
+if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . 
-    $this.conn->connect_errno . ") " . $this.conn->connect_error;
+    $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
             return $this->conn;
         }
