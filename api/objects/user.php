@@ -31,7 +31,7 @@ class User{
         $this->username=htmlspecialchars(strip_tags($this->username));
      
         
-        $stmt->bindParam(1, $this->username);
+        $stmt->bindparam(1, $this->username);
      
         
         $stmt->execute();
