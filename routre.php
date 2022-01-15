@@ -1,5 +1,8 @@
 <?php
 require 'api/config/config.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
 print_r($request_uri);
@@ -57,7 +60,6 @@ switch ($request_uri[0]) {
         require 'api/game/leavegame.php';
         break;        
     case '/~it185222/ADISE21_moutz/routre.php/getusername':
-        print_r($request_uri);
         require 'api/user/getUsername.php';
         break;
             
