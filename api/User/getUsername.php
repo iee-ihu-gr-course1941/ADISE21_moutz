@@ -12,7 +12,6 @@ include_once 'api/libs/src/SignatureInvalidException.php';
 include_once 'api/libs/src/JWT.php';
 use \Firebase\JWT\JWT;
 $data = json_decode(file_get_contents("php://input"));
- 
 $jwt=isset($data->jwt) ? $data->jwt : "";
 
 if($jwt){
