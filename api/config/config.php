@@ -15,10 +15,10 @@
             try
             {
                 if(gethostname()=='users.iee.ihu.gr') {
-                    $this->conn =new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->user,$this->password);
+                    $this->conn =new mysqli($this->host,$this->user,$this->password,$this->db,null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
                  
                 }else{
-                    $this->conn =new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->user,$this->pass);
+                    $this->conn =new mysqli('mysql:host='.$this->host.';dbname='.$this->db,$this->user,$this->pass);
             }
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }catch(PDOException $e)
