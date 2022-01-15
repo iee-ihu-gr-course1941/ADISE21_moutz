@@ -5,7 +5,7 @@
         private $host = 'localhost';
         private $db = 'adise2021';
         private $user = 'root';
-        private $pass = '';
+        private $pass[] = '';
         private $conn;
         // echo "c";
         public function connect()
