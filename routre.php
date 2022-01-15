@@ -1,8 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-  try {
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+//   try {
 require 'api/config/config.php';
 
 
@@ -71,13 +71,13 @@ switch ($request_uri[0]) {
         break;
         
 }
-}
-catch (Exception $e){
+// }
+// catch (Exception $e){
 	 
-    http_response_code(401);
+//     http_response_code(401);
 	 
-	    echo json_encode(array(
-	        "message" => "Access denied.",
-	        "error" => $e->getMessage()
-	    ));
-	}
+// 	    echo json_encode(array(
+// 	        "message" => "Access denied.",
+// 	        "error" => $e->getMessage()
+// 	    ));
+// 	}
