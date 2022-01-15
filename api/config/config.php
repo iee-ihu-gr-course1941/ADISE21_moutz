@@ -5,7 +5,7 @@
         private $host = 'localhost';
         private $db = 'adise2021';
         private $user = 'root';
-        private $pass = '';
+        private $password = '';
         private $conn;
         // echo "c";
         public function connect()
@@ -15,7 +15,7 @@
             try
             {
                 if(gethostname()=='users.iee.ihu.gr') {
-                    $this->conn =new PDO('mysql:host='.$this->host,';dbname='.$this->db,$this->user,"",null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
+                    $this->conn =new PDO('mysql:host='.$this->host,';dbname='.$this->db,$this->user,$this->password,null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
                 }else{
                     $this->conn =new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->user,$this->pass);
             }
