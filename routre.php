@@ -1,4 +1,5 @@
 <?php
+  try {
 require 'api/config/config.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -67,4 +68,15 @@ switch ($request_uri[0]) {
     default:
         header('HTTP/1.0 404 Not Found');
         break;
+        
+}
+catch (Exception $e){
+	 
+    http_response_code(401);
+	 
+	    echo json_encode(array(
+	        "message" => "Access denied.",
+	        "error" => $e->getMessage()
+	    ));
+	}
 }
