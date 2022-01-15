@@ -11,20 +11,19 @@
         public function connect()
         {
             $this->conn = null;
-            // echo "b";
 
-if(gethostname()=='users.iee.ihu.gr') {
-    $this->conn =new mysqli($this->host, $this->user,$this->pass, $this->db,null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
-    print_r($this->conn);
-    
-} else {
-    $this->conn =new mysqli($this->host, $this->user, $this->pass, $this->db);
-}
-
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: (" . 
-    $mysqli->connect_errno . ") " . $mysqli->connect_error;
-}
+            try
+            {
+                if(gethostname()=='users.iee.ihu.gr') {
+                    $this->conn =new PDO($this->host, $this->user,$this->pass, $this->db,null,'/home/student/it/2018/it185222/mysql/run/mysql.sock');
+                }else{
+                $this->conn = new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->username,$this->pass);
+            }
+                $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            }catch(PDOException $e)
+            {
+                echo 'Connection Error : '. $e->getMessage();
+            }
             return $this->conn;
         }
     }
