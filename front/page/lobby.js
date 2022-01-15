@@ -168,8 +168,9 @@ function getUsername() {
       console.log(success.data)
       userName.innerHTML = success.data;
     },
-    error: function(){
-      console.log("error on getting username")
+    error: function(xhr, resp, text){
+      console.log("error on getting username");
+      console.log(xhr, resp, text);
     }
   });
 }
