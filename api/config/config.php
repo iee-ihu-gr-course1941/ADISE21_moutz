@@ -15,7 +15,7 @@
             try
             {
                 if(gethostname()=='users.iee.ihu.gr') {
-                    $this->conn =new PDO('mysql:host='.$this->host,';dbname='.$this->user,$this->pass, $this->db);
+                    $this->conn =new PDO('mysql:host='.$this->host,';dbname='. $this->db,$this->user,$this->pass);
                 }else{
                 $this->conn = new PDO('mysql:host='.$this->host.';dbname='.$this->db,$this->username,$this->pass);
             }
