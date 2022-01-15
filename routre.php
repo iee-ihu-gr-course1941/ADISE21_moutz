@@ -1,9 +1,10 @@
 <?php
-  try {
-require 'api/config/config.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+  try {
+require 'api/config/config.php';
+
 
 $request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
 // print_r($request_uri);
