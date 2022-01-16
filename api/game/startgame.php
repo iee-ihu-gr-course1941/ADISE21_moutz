@@ -22,25 +22,21 @@ $game = new Game($db);
 $game->id = $data->room;
 
 if ($jwt) {
-
     try {
 
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $game->idu =$decoded->data->id;
+
         if ($game->startgame() && $game->showdeck()) {
            
            
             
-            echo json_encode(
+            exit(json_encode(
                 array(
                     "id" => $decoded->data->id,
                     "cards" => $game->cards
                 )
-            );
-            // print_r($room);
-            http_response_code(200);
-
-            echo json_encode(array("message" => "game was started."));
+            ));
         } else {
 
             http_response_code(400);

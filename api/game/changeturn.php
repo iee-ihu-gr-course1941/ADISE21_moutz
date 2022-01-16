@@ -19,18 +19,25 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt = isset($data->jwt) ? $data->jwt : "";
 $game = new Game($db);
 $game->id = $data->room;
-if ($jwt) {
+$bot =$data->isbot;
+if ($jwt){
 
     try {
 
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $game->idu =$decoded->data->id;
         if ($game->changeturn()) {
-
+            
+            if($bot){
+                $game->idu =5; 
+                if ($game->selectrandom() && $game->dropcards() && $game->changeturn()) {
+                    exit(json_encode(array("message" => "bot played")));
+            }
             http_response_code(200);
-
+            
             echo json_encode(array("message" => "move was chaged"));
-        } else {
+        }
+    } else {
 
             http_response_code(400);
 

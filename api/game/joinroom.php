@@ -18,26 +18,32 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt=isset($data->jwt) ? $data->jwt : "";
 $game = new Game($db);
 $game->id = $data->room;
+$bot =$data->isbot;
 if($jwt){
  
     try {
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $game->idu =$decoded->data->id;
+
         if($game->joinroom()){
- 
-            http_response_code(200);
-         
-            echo json_encode(array("message" => "join"));
+            if($bot){
+                $game->idu = 5; 
+                if ($game->joinroom()) {
+                    exit(json_encode(array("message" => "bot join")));
+            } 
         }
-         
-        else{
+            http_response_code(200);
+          
+            echo json_encode(array("message" => "join"));
+       
+    }else{
          
             http_response_code(400);
          
             echo json_encode(array("message" => "Unable to join room."));
         }
-      
     }
+
  
      catch (Exception $e){
 	 

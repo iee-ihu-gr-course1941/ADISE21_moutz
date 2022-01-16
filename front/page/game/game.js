@@ -22,6 +22,7 @@ var runFirstTime = true;
 var dropped = false;
 var myNameContainer = document.querySelector("#pname2");
 var turnName = document.querySelector("#turnText");
+var isbot = false;
 $("#turnText").hide();
 
 //
@@ -100,7 +101,7 @@ function changeTurn() {
     method: "POST",
     url: "/~it185222/ADISE21_moutz/routre.php/changeturn",
     dataType: "json",
-    data: JSON.stringify({ jwt: jwt, room: roomId }),
+    data: JSON.stringify({ jwt: jwt, room: roomId , isbot: isbot}),
     contentType: "application/json",
     success: function () {
       resetConsole("Changed Turn");
@@ -132,6 +133,9 @@ function renderCards() {
           player1Array.push({ v: `${results[all].v}`, c: `${results[all].c}` }); //Add card to my hand(array)
           myCount = player1Array.length;
         } else {
+          if (results[all].user_id = -1){
+            isbot = true;
+          }
           enemCount++; //Pros8ese sto plh8os twn kartwn tou antipalou akoma mia
         }
       }
@@ -184,7 +188,7 @@ function leaveGame() {
     method: "POST",
     url: "/~it185222/ADISE21_moutz/routre.php/leavegame",
     dataType: "json",
-    data: JSON.stringify({ jwt: jwt, room: roomId }),
+    data: JSON.stringify({ jwt: jwt, room: roomId , isbot: isbot}),
     contentType: "application/json",
     success: function () {
       console.log("Left the room");

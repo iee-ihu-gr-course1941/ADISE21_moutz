@@ -4,6 +4,8 @@ var isSecond = false;
 var roomsWrap = document.querySelector(".main_btns");
 var btn_state = 1;
 var userName = document.querySelector(".username-main");
+var isbot = false;
+var botBtn = document.querySelector("#bot_btn");
 
 //Stop strings from OverFlowing
 function OverflowString() {
@@ -62,6 +64,66 @@ $("#request").click(function () {
   }
 });
 
+$(document).on("click", "#bot_btn", function () {
+  $(".btnH").hide(); //Hide buttons on Menu
+  $(".main_menu").addClass("menuTrans");
+  isbot = true;
+
+  //AJAX request that shows all rooms
+  $.ajax({
+    method: "POST",
+    url: "/~it185222/ADISE21_moutz/routre.php/getrooms",
+    dataType: "json",
+    data: JSON.stringify({
+      jwt: jwt,
+    }),
+    contentType: "application/json",
+    success: function (result) {
+      console.log(result);
+      results = result.rooms;
+
+      var temp = -1; //Arxikopoihsh tou temp
+
+      for (roomsKey in results) {
+        // console.log(results[roomsKey].id);
+
+        //Elegxos an uparxei hdh enas user mesa se auto to lobby
+        if (temp != results[roomsKey].id) {
+          var htmlToAdd = `<div onclick="clickFunct(${
+            results[roomsKey].id
+          },${isSecond})" class="roomContainer">
+                  <div class = "roomId">Room Id:  ${
+                    results[roomsKey].id
+                  } <br> </div>
+                  <div class = "participants">Participant 1: ${
+                    results[roomsKey].username || ""
+                  }`;
+
+          htmlToAdd += `<br></div> <div class = "btnConnect">`;
+
+          htmlToAdd += `Active<a href="" class="aBtnA aBtn"></a></div>
+              </div>`;
+
+          temp = results[roomsKey].id; //Apo8ikeush tou room(roomContainer) poy dhmiourgh8ke
+
+          roomsWrap.innerHTML += htmlToAdd; //Pros8iki tou room(roomContainer) mesa sto container(roomsWrap) twn lobbies
+
+          var num = [...document.querySelectorAll(".participants")]; //Ola ta .participants se array morfh
+          var last = num[num.length - 1]; //Pare to teleutaio .participants pou dhmiourgh8hke
+
+          last.innerHTML += `Participant 2: Robot`; //Pros8ese ton kwdika gia to robot
+          document.querySelectorAll(".roomContainer");
+          // [num.length - 1].classList.add("unclick"); //bale to class "unclick" sto room(roomContainer), opou to kanei unclickable
+
+          // document.querySelectorAll(".btnConnect")[
+          //   num.length - 1
+          // ].innerHTML = `Full<a href="" class="aBtnF aBtn"></a></div> </div>`;
+        }
+      }
+    },
+  });
+});
+
 //Button 'Join Lobby' shows all lobbies
 $(document).on("click", "#play_btn", function () {
   $(".btnH").hide(); //Hide buttons on Menu
@@ -72,7 +134,9 @@ $(document).on("click", "#play_btn", function () {
     method: "POST",
     url: "/~it185222/ADISE21_moutz/routre.php/getrooms",
     dataType: "json",
-    data: JSON.stringify({ jwt: jwt }),
+    data: JSON.stringify({
+      jwt: jwt,
+    }),
     contentType: "application/json",
     success: function (result) {
       console.log(result);
@@ -132,24 +196,31 @@ function clickFunct(num, isSecond) {
     url: "/~it185222/ADISE21_moutz/routre.php/joinroom",
     dataType: "json",
     contentType: "application/json",
-    data: JSON.stringify({ room: num, jwt: jwt }),
+    data: JSON.stringify({
+      room: num,
+      jwt: jwt,
+      isbot: isbot,
+    }),
     success: function () {
       //Request to start game and render my cards for the first time
+      console.log(num);
       $.ajax({
         method: "POST",
         url: "/~it185222/ADISE21_moutz/routre.php/startgame",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify({ jwt: jwt, room: num }),
+        data: JSON.stringify({
+          jwt: jwt,
+          room: num,
+        }),
         success: function () {
           console.log("Both users joined");
+          window.location = `/~it185222/ADISE21_moutz/front/page/game/game.html?lobbyId=${num}`;
+        },
+        error: function () {
+          window.location = `/~it185222/ADISE21_moutz/front/page/game/game.html?lobbyId=${num}`;
         },
       });
-
-      window.location = `/~it185222/ADISE21_moutz/front/page/game/game.html?lobbyId=${num}`;
-    },
-    error: function () {
-      alert("Something went wrong :(");
     },
   });
 }
@@ -162,16 +233,18 @@ function getUsername() {
     url: "/~it185222/ADISE21_moutz/routre.php/getusername",
     dataType: "json",
     contentType: "application/json",
-    data: JSON.stringify({ jwt: jwt }),
+    data: JSON.stringify({
+      jwt: jwt,
+    }),
     success: function (success) {
       console.log("yee");
-      console.log(success.data)
+      console.log(success.data);
       userName.innerHTML = success.data;
     },
-    error: function(xhr, resp, text){
+    error: function (xhr, resp, text) {
       console.log("error on getting username");
       console.log(xhr, resp, text);
-    }
+    },
   });
 }
 

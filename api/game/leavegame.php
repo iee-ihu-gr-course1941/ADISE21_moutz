@@ -19,6 +19,7 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt = isset($data->jwt) ? $data->jwt : "";
 $game = new Game($db);
 $game->id = $data->room;
+$bot =$data->isbot;
 if ($jwt) {
 
     try {
@@ -27,9 +28,12 @@ if ($jwt) {
         $game->idu =$decoded->data->id;
         if ($game->leavegame()) {
 
-            http_response_code(200);
-
-            echo json_encode(array("message" => "move was chaged"));
+            if($bot){
+                $game->idu = 5; 
+                if ($game->leavegame()) {
+                    exit(json_encode(array("message" => "bot join")));
+            } 
+            }
         } else {
 
             http_response_code(400);
